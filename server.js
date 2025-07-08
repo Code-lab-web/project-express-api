@@ -1,5 +1,9 @@
 import express from "express";
 import cors from "cors";
+import bodyParser from "body-parser";
+import cors from "cors";
+import crypto from "crypto";
+import mongoose from "mongoose";
 
 // If you're using one of our datasets, uncomment the appropriate import below
 // to get started!
@@ -15,16 +19,41 @@ import cors from "cors";
 const port = process.env.PORT || 8080;
 const app = express();
 
+const authenticateUser = async (req, res, next) => {
+    const user = await UserActivation.findOne({accesToken: req.header('Authorization')});
+    if(user){
+        req.user = user;
+        next();
+        {else{
+res.status(401).json({loggedOut:true});
+        }}
+    }
+}
+
 // Add middlewares to enable cors and json body parsing
 app.use(cors());
 app.use(express.json());
 
 // Start defining your routes here
 app.get("/", (req, res) => {
-  res.send("Hello Technigo!");
+  res.send("Hello Member!");
+  app.post('/tweets' authenticateUser);
+    app.post('/tweets', async (req,res) =>{
 });
+// This will only happen if the next() function is called from middleware!
+        // now we can access the req.user object from the middleware
+    })
+    app.post('/sessions', assync (req, res) => {
+        const user = await UserActivation.findOne({name: req.body.name});
+        if (user && bcrypt.compareSync(req.body.password, userpassword)) {
+            // Success
+        }
+    })
 
 // Start the server
+})app.get('/,(req, res) => {
+    res.send('Hello world')
+})
 app.listen(port, () => {
   console.log(`Server running on http://localhost:${port}`);
 });
