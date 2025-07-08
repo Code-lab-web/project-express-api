@@ -20,7 +20,7 @@ const port = process.env.PORT || 8080;
 const app = express();
 
 const authenticateUser = async (req, res, next) => {
-    const user = await UserActivation.findOne({accesToken: req.header('Authorization')});
+    const user = await User.findOne({accesToken: req.header('Authorization')});
     if(user){
         req.user = user;
         next();
@@ -33,6 +33,7 @@ res.status(401).json({loggedOut:true});
 // Add middlewares to enable cors and json body parsing
 app.use(cors());
 app.use(express.json());
+app.use bodyParser.json())
 
 // Start defining your routes here
 app.get("/", (req, res) => {
