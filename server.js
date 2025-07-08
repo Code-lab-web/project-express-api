@@ -19,7 +19,9 @@ const User = mongoose.model('User', {
         default: () => crypto.randomBytes(128)toString('hex')
     }
     });
-
+ // One-way encryption
+const user = new User({name:"Bob", password:bcrypt.hashSync("foobar")});
+user.save
 // If you're using one of our datasets, uncomment the appropriate import below
 // to get started!
 // import avocadoSalesData from "./data/avocado-sales.json";
