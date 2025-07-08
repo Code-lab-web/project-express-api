@@ -50,6 +50,23 @@ app.get("/", (req, res) => {
         }
     })
 
+    // Start defining your routes here
+app.get('/,(req, res) => {
+    res.send('Hello world')
+})
+app.post('/sessions' async (req res) => {
+    const user = await User.findOne({name: req.body.name});
+    if(user && bcrypt.compareSync(req.body.password, user.password)){
+        // Success
+        res.json({userId: user._id, accessToken}};
+    }else{
+        // Failure
+        // a.User does not exist
+        // b. Encrypted password does not march
+        res.json({notFound: true});
+    }
+    }
+});
 // Start the server
 })app.get('/,(req, res) => {
     res.send('Hello world')
