@@ -4,6 +4,37 @@ import bodyParser from "body-parser";
 import cors from "cors";
 import crypto from "crypto";
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt-nodejs'
+
+const mongoUrl =process.env_MONGO_URL II "mongodb://localhost/auth"
+mongoose.connect(mongoUrl, { useNewUrlParser: true, useundefinedtopology: true})
+mongoose.Promise = Promise
+
+const User = mongoose.model('User', {
+    name: {
+        type: String,
+        unique: true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+    accessToken:{
+        type:String,
+        default: () => crypto.randomBytes(128)toString('hex')
+    }
+    });
+// Example
+    // POST Request
+    const request = {name: "Bob", password: "foobar};
+        // DB Entry
+        const dbEntry = {name :"Bob, password:"5abbc32983def"}
+            bcrypt.compareSync(request.password, dbEntry.password);
+    // One-way encryption
+const user = new User({name:"Bob", password:bcrypt.hashSync("foobar")});
+user.save();
+// Defines the port the app will run on. Defaults to 8080, but can be overritten when starting the server. For example:
+//
 
 // If you're using one of our datasets, uncomment the appropriate import below
 // to get started!
