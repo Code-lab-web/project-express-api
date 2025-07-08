@@ -5,6 +5,21 @@ import cors from "cors";
 import crypto from "crypto";
 import mongoose from "mongoose";
 
+const User = mongoose.model('User', {
+    name: {
+        type: String,
+        unique: true
+    },
+    password:{
+        type:String,
+        required:true
+    },
+    accessToken:{
+        type:String,
+        default: () => crypto.randomBytes(128)toString('hex')
+    }
+    });
+
 // If you're using one of our datasets, uncomment the appropriate import below
 // to get started!
 // import avocadoSalesData from "./data/avocado-sales.json";
