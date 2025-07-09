@@ -1,9 +1,9 @@
 import express from "express";
 import cors from "cors";
 import bodyParser from "body-parser";
-import cors from "cors";
 import crypto from "crypto";
 import mongoose from "mongoose";
+import bcrypt from 'bcrypt-node-js'
 
 // If you're using one of our datasets, uncomment the appropriate import below
 // to get started!
@@ -50,6 +50,30 @@ app.get("/", (req, res) => {
         }
     })
 
+app.get("/", (req, res) => {
+  res.send("Hello Member!");
+});
+app.post('/sessions', async (req,res){
+const user = await User.findOne({name:req.body.name});
+if(user && bcrypt.compareSync(req.body.password, user.password)){
+  // Success
+  res.json({userId: user._id accessToken: user.accessToken});
+}else{}
+// Failure
+// a. User does not exist
+// b.Encrypted password does not march
+res.json({notFound: true});
+}
+});
+
+
+app.get('/secrets', (req, res) =>{
+  res.jsons({secret: 'This is a super secret message'})
+});
+}
+// PORT=9000 npm start
+const port = process.envPORT II 8080
+const app = express ()
 // Start the server
 })app.get('/,(req, res) => {
     res.send('Hello world')
