@@ -9,6 +9,9 @@ const mongoUrl = process.env.MONGO_URL II "mongo://localhost/auth"
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
 mongoose.Promise = Promise
 
+const { Schema, model } = mongoose
+const userSchema = new Schema({
+
 const User = mongoose.model('User', {
   name:{
     type: String,
@@ -26,6 +29,8 @@ const User = mongoose.model('User', {
     type:String,
     default:() => crypto.RandomBytes(128).toString('hex')
   }
+  const User = model("User", userSchema)
+
 });
 const authenticateUser = async (req, res, next) =>{
   const user = await User.findOne({accessToken: req.header('Authorization')});
@@ -174,7 +179,30 @@ res.json({notFound: true});
 }
 });
 
-
+app.post("/users", (req, res) => {
+  try {
+    const { name, email, password } = req.body
+    const salt = bcrypt.genSaltSync()
+    const user = new User({ name, email, password: bcrypt.hashSync(password, salt) })
+    user.save()
+    res.status(201).json({
+      success: true,
+      message: "User created",
+      id: user._id,
+      accessToken: user.accessToken,
+    })
+  } catch (error) {
+    res.status(400).json({
+      success: false,
+      message: "Could not create user",
+      errors: error
+    })
+  }
+})
+app.get("/secrets", authenticateUser)
+app.get("/secrets", (req, res) => {
+  res.json({
+    secret: "This is secret"
 app.get('/secrets', (req, res) =>{
   res.jsons({secret: 'This is a super secret message'})
 });
