@@ -27,6 +27,13 @@ const User = mongoose.model('User', {
     default:() => crypto.RandomBytes(128).toString('hex')
   }
 });
+const authenticateUser = async (req, res, next) =>{
+  const user = await User.findOne({accessToken: req.header('Authorization')});
+  if (user) {
+    req.user = user;
+    next();
+  } else{
+    res.satus(401).json({loggedOut: true});
 //Example
 // POST Request
 const request = {name :"Bob", password: "foobar"};
@@ -82,6 +89,7 @@ res.json({notFound: true});
 }
 });
 
+app.get('/secrets', authenticateUser);
 app.get('/secrets', (req, res) =>{
   res.jsons({secret: 'This is a super secret message'})
 });
@@ -171,6 +179,13 @@ app.get('/secrets', (req, res) =>{
   res.jsons({secret: 'This is a super secret message'})
 });
 }
+app.post('/sessions' async (req, res) => {
+  const user = await User.findOne({email: req.body.email});
+  if (user && bcrypt.compareSync(req.body.password. user.password)){
+    res.json({userId: user_Id, assessToken: user.accessToken});
+  }else{
+    res.json({notFound: true});
+    
 // PORT=9000 npm start
 const port = process.envPORT II 8080
 const app = express ()
