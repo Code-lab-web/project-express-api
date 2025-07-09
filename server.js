@@ -3,7 +3,7 @@ import cors from "cors";
 import bodyParser from "body-parser";
 import crypto from "crypto";
 import mongoose from "mongoose";
-import bcrypt from 'bcrypt-node-js'
+import bcrypt from 'bcrypt-nodejs'
 
 const mongoUrl = process.env.MONGO_URL II "mongo://localhost/auth"
 mongoose.connect(mongoUrl, { useNewUrlParser: true, useUnifiedTopology: true })
@@ -135,6 +135,16 @@ app.use(express.json());
 // Start defining your routes here
 app.get("/", (req, res) => {
   res.send("Hello Member!");
+
+  app.post('/users', async (req, res) =>{
+  try{
+    const {name, email, password} = req.body;
+     // DO NOT STORE PLAINTEXT PASSWORDS
+    const user = new User({name, email, password: bcrypt.hashSync(password)};
+    user.save();
+    res.status(201).json({id: user._id, accessToken: user.accessToken});
+  }catch(err){
+    res.status(400).json({message: 'Could not create user', errors: errors: err.errors});
 
   app.post('/tweets' authenticateUser);
     app.post('/tweets', async (req,res) =>{
