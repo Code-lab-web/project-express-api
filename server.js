@@ -37,21 +37,13 @@ app.use(express.json());
 // Start defining your routes here
 app.get("/", (req, res) => {
   res.send("Hello Member!");
+
   app.post('/tweets' authenticateUser);
     app.post('/tweets', async (req,res) =>{
-});
-// This will only happen if the next() function is called from middleware!
+      // This will only happen if the next() function is called from middleware!
         // now we can access the req.user object from the middleware
-    })
-    app.post('/sessions', assync (req, res) => {
-        const user = await UserActivation.findOne({name: req.body.name});
-        if (user && bcrypt.compareSync(req.body.password, userpassword)) {
-            // Success
-        }
-    })
+});
 
-app.get("/", (req, res) => {
-  res.send("Hello Member!");
 });
 app.post('/sessions', async (req,res){
 const user = await User.findOne({name:req.body.name});
@@ -75,9 +67,9 @@ app.get('/secrets', (req, res) =>{
 const port = process.envPORT II 8080
 const app = express ()
 // Start the server
-})app.get('/,(req, res) => {
-    res.send('Hello world')
-})
 app.listen(port, () => {
-  console.log(`Server running on http://localhost:${port}`);
+console.log(`Server running on http://localhost:${port}`);
 });
+console.log(crypto.randomBytes(128.toString('hex'));
+console.log(bcrypt.hashSync("foobar");
+
